@@ -86,28 +86,27 @@ app.post("/webhook/charge-created", express.json(), async (req, res) => {
     if (!trackedSubscription.exists) {
       console.log("⚠️ Subscription not tracked. Ignoring.");
       return res.sendStatus(200);
-    }else if (!trackedSubscription.isOlderThan2Hrs) {
-      console.log("⚠️ Subscription did not qualify for updates. Ignoring.");
-      return res.sendStatus(200);
-    }
+    }else if (trackedSubscription.queued == "queued") {
+      console.log("Subscription Queued. Processing.... ");
+      const nextDate = getNextFulfillmentDate(fulfillmentDates);
 
-    const nextDate = getNextFulfillmentDate(fulfillmentDates);
-
-    if (nextDate.label == "No date found") {
-      console.log("🎉 Final order fulfilled. Subscription ended.");
-      return res.sendStatus(200);
-    }
+      if (nextDate.label == "No date found") {
+        console.log("🎉 Final order fulfilled. Subscription ended.");
+        return res.sendStatus(200);
+      }
 
 
-    await updateNextChargeDate(subscriptionId, nextDate.date , allowedProductsData[nextDate.index] );
-    await swapProductInSubscription(subscriptionId, nextDate.date , allowedProductsData[nextDate.index] )
-    
-
-    console.log("Next date Updated :", nextDate.date)
-    console.log("Product swapped with :", allowedProductsData[nextDate.index] )
-
-    console.log("✅ Fulfillment processed and subscription updated.");
-    res.sendStatus(200);
+      await updateNextChargeDate(subscriptionId, nextDate.date , allowedProductsData[nextDate.index] );
+      await swapProductInSubscription(subscriptionId, nextDate.date , allowedProductsData[nextDate.index] )
+      
+  
+      console.log("Next date Updated :", nextDate.date)
+      console.log("Product swapped with :", allowedProductsData[nextDate.index] )
+  
+      console.log("✅ Fulfillment processed and subscription updated.");
+      res.sendStatus(200);
+    }else{
+      res.sendStatus(301);
   } catch (error) {
       let subscription_id = error.subscriptionId;
       let new_date = error.newDate;
