@@ -120,57 +120,6 @@ app.post("/webhook/charge-created", express.json(), async (req, res) => {
 });
 
 
-app.post("/webhook/subscription-updated", express.json(), async (req, res) => {
-  try {
-    const subscription = req.body.subscription;
-
-    console.log("📦 Subscription Updated Webhook Received:", subscription);
-
-    if (!subscription || !subscription.shopify_product_id) {
-      console.warn("No subscription data or product ID found.");
-      return res.sendStatus(400);
-    }
-
-    const subscriptionId = subscription.id?.toString();
-
-    const trackedSubscription = await checkTrackedSubscription(subscriptionId) // checks if the id exists in the DB
-
-    if (!trackedSubscription.exists) {
-      console.log("⚠️ Subscription not tracked. Ignoring.");
-      return res.sendStatus(200);
-    }else if (!trackedSubscription.isOlderThan2Hrs) {
-      console.log("⚠️ Subscription did not qualify for updates. Ignoring.");
-      return res.sendStatus(200);
-    }
-
-    const nextDate = getNextFulfillmentDate(fulfillmentDates);
-
-    if (nextDate.label == "No date found") {
-      console.log("🎉 Final order fulfilled. Subscription ended.");
-      return res.sendStatus(200);
-    }
-
-
-    await updateNextChargeDate(subscriptionId, nextDate.date , allowedProductsData[nextDate.index] );
-    await swapProductInSubscription(subscriptionId, nextDate.date , allowedProductsData[nextDate.index] )
-    
-
-    console.log("Next date Updated :", nextDate.date)
-    console.log("Product swapped with :", allowedProductsData[nextDate.index] )
-
-    console.log("✅ Fulfillment processed and subscription updated.");
-    res.sendStatus(200);
-  } catch (error) {
-      let subscription_id = error.subscriptionId;
-      let new_date = error.newDate;
-      let new_product = error.newProduct;
-      await queueSubscriptionUpdate({ subscription_id, new_date, new_product });
-
-      console.error("❌ Error handling fulfillment webhook:", error);
-      res.sendStatus(500);
-  }
-});
-
 
 app.post("/webhook/subscription-cancelled", express.json(), async (req, res) => {
   try {
