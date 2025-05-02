@@ -81,7 +81,7 @@ app.post("/webhook/charge-created", express.json(), async (req, res) => {
       return res.sendStatus(400);
     }
 
-    const trackedSubscription = checkTrackedSubscription(subscriptionId) // checks if the id exists in the DB
+    const trackedSubscription = await checkTrackedSubscription(subscriptionId) // checks if the id exists in the DB
 
     if (!trackedSubscription.exists) {
       console.log("⚠️ Subscription not tracked. Ignoring.");
@@ -133,7 +133,7 @@ app.post("/webhook/subscription-updated", express.json(), async (req, res) => {
 
     const subscriptionId = subscription.id?.toString();
 
-    const trackedSubscription = checkTrackedSubscription(subscriptionId) // checks if the id exists in the DB
+    const trackedSubscription = await checkTrackedSubscription(subscriptionId) // checks if the id exists in the DB
 
     if (!trackedSubscription.exists) {
       console.log("⚠️ Subscription not tracked. Ignoring.");
