@@ -3,7 +3,10 @@ import { connection } from './config/redis-connection.js';
 import axios from 'axios';
 import { FailedJob } from './schema.js'; 
 import dotenv from 'dotenv';
+import { connectMongo } from './config/mongo-connection.js';
 
+
+connectMongo();
 dotenv.config();
 
 const RECHARGE_API_TOKEN = process.env.RECHARGE_API_TOKEN;
