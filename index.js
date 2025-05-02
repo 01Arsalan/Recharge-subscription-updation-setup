@@ -65,8 +65,10 @@ app.post("/webhook/charge-created", express.json(), async (req, res) => {
     const chargeData = req.body.charge;
 
     console.log("📦 Charge Created Webhook Received:", chargeData);
-
-    const subscriptionId = chargeData.line_items[0].subscription_id;
+    // Webhook version 2021-01
+    // const subscriptionId = chargeData.line_items[0].subscription_id;
+    // Webhook version 2021-11
+    const subscriptionId = chargeData.line_items[0].purchase_item_id;
 
     if (!subscriptionId) {
       console.warn("❗ No subscription ID found in charge-created webhook.");
@@ -78,7 +80,7 @@ app.post("/webhook/charge-created", express.json(), async (req, res) => {
     if (!trackedSubscription.exists) {
       console.log("⚠️ Subscription not tracked. Ignoring.");
       return res.sendStatus(200);
-    }else if (trackedSubscription.isOlderThan2Days) {
+    }else if (trackedSubscription.isOlderThan2Hrs) {
       console.log("⚠️ Subscription did not qualify for updates. Ignoring.");
       return res.sendStatus(200);
     }

@@ -162,22 +162,22 @@ export async function checkTrackedSubscription(subscriptionId) {
       const createdAt = subscription.created_at;
       const now = new Date();
       const ageInMs = now - createdAt;
-      const ageInDays = ageInMs / (1000 * 60 * 60 * 24); // Convert ms to days
-      const isOlderThan2Days = ageInDays >= 2;
+      const ageInHrs = ageInMs / (1000 * 60 * 60 ); // Convert ms to hrs
+      const isOlderThan2Hrs = ageInHrs >= 2;
 
-      console.log(`✅ Subscription with ID ${subscriptionId} exists. Created ${ageInDays.toFixed(2)} days ago.`);
+      console.log(`✅ Subscription with ID ${subscriptionId} exists. Created ${ageInHrs.toFixed(2)} hrs ago.`);
 
       return {
         exists: true,
         createdAt,
-        isOlderThan2Days
+        isOlderThan2Hrs
       };
     } else {
       console.log(`❌ No subscription found with ID ${subscriptionId}.`);
       return {
         exists: false,
         createdAt: null,
-        isOlderThan2Days: false
+        isOlderThan2Hrs: false
       };
     }
   } catch (error) {
