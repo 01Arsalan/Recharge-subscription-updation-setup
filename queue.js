@@ -7,7 +7,7 @@ const updateQueue = new Queue('subscription-update', {
 
 export async function queueSubscriptionUpdate(data) {
   await updateQueue.add('update', data, {
-    jobId: data.subscription_id, // check this, it might cause some relevent request to not register as a job upon failure if a job with same id has failed and already in queue.
+    jobId: data.subscription_id.toString(), // check this, it might cause some relevent request to not register as a job upon failure if a job with same id has failed and already in queue.
     attempts: 5, 
     removeOnComplete: true,
     removeOnFail: false,        
