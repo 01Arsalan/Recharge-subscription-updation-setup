@@ -159,26 +159,16 @@ export async function checkTrackedSubscription(subscriptionId) {
     const subscription = await TrackedSubscription.findOne({ subscription_id: subscriptionId });
 
     if (subscription) {
-      const createdAt = new Date(subscription.created_at); // Ensure it's a Date object
-      const now = new Date();
-      const ageInMs = now - createdAt;
-      const ageInHrs = ageInMs / (1000 * 60 * 60); // Convert ms to hrs
-      const isOlderThan2Hrs = ageInHrs >= 2;
-
 
       console.log(`✅ Subscription with ID ${subscriptionId} exists. Created ${ageInHrs.toFixed(2)} hrs ago. || isOlderThan2Hrs: ${isOlderThan2Hrs}`);
 
       return {
-        exists: true,
-        createdAt,
-        isOlderThan2Hrs
+        exists: true
       };
     } else {
       console.log(`❌ No subscription found with ID ${subscriptionId}.`);
       return {
-        exists: false,
-        createdAt: null,
-        isOlderThan2Hrs: false
+        exists: false
       };
     }
   } catch (error) {
