@@ -131,9 +131,7 @@ app.post("/webhook/subscription-updated", express.json(), async (req, res) => {
       return res.sendStatus(400);
     }
 
-    const productId = subscription.shopify_product_id.toString();
     const subscriptionId = subscription.id?.toString();
-    const customerId = subscription.customer_id?.toString();
 
     const trackedSubscription = checkTrackedSubscription(subscriptionId) // checks if the id exists in the DB
 
