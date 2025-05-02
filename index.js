@@ -42,14 +42,19 @@ app.post("/webhook/subscription-created", express.json(), (req, res) => {
     const subscriptionId = subscription.id?.toString();
     const customerId = subscription.customer_id?.toString();
 
+    let wrongProduct = false;
+
     allowedProductsData.forEach(product=>{
       if(product.variantId == productId){
         // save subscription id,customer_id on DB
         addSubscription(subscriptionId,customerId)
-      }else {
-        console.log("No matching product ID. Ignoring Subscription.");
+        wrongProduct = true
       }
     })
+    if(wrongProduct) {
+      console.log("No matching product ID. Ignoring Subscription.");
+      res.sendStatus(401);
+    }
 
     res.sendStatus(200);
   } catch (error) {
