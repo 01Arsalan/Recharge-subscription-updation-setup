@@ -38,7 +38,7 @@ app.post("/webhook/subscription-created", express.json(), (req, res) => {
       return res.sendStatus(400);
     }
 
-    const productId = subscription.shopify_product_id.toString();
+    const productId = subscription.external_variant_id.ecommerce.toString();
     const subscriptionId = subscription.id?.toString();
     const customerId = subscription.customer_id?.toString();
 
