@@ -138,7 +138,7 @@ app.post("/webhook/subscription-updated", express.json(), async (req, res) => {
     if (!trackedSubscription.exists) {
       console.log("⚠️ Subscription not tracked. Ignoring.");
       return res.sendStatus(200);
-    }else if (trackedSubscription.isOlderThan2Hrs) {
+    }else if (!trackedSubscription.isOlderThan2Hrs) {
       console.log("⚠️ Subscription did not qualify for updates. Ignoring.");
       return res.sendStatus(200);
     }
