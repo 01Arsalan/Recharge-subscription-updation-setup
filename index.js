@@ -107,6 +107,7 @@ app.post("/webhook/charge-created", express.json(), async (req, res) => {
       res.sendStatus(200);
     }else{
       res.sendStatus(301);
+    }
   } catch (error) {
       let subscription_id = error.subscriptionId;
       let new_date = error.newDate;
