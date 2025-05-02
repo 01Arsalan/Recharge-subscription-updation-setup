@@ -86,7 +86,7 @@ app.post("/webhook/charge-created", express.json(), async (req, res) => {
     if (!trackedSubscription.exists) {
       console.log("⚠️ Subscription not tracked. Ignoring.");
       return res.sendStatus(200);
-    }else if (trackedSubscription.queued == "queued") {
+    }else if (chargeData.status == "queued") {
       console.log("Subscription Queued. Processing.... ");
       const nextDate = getNextFulfillmentDate(fulfillmentDates);
 
