@@ -33,7 +33,7 @@ app.post("/webhook/subscription-created", express.json(), (req, res) => {
 
     console.log("📦 Subscription Created Webhook Received:", subscription);
 
-    if (!subscription || !subscription..external_variant_id.ecommerce) {
+    if (!subscription || !subscription.external_variant_id.ecommerce) {
       console.warn("No subscription data or product ID found.");
       return res.sendStatus(400);
     }
