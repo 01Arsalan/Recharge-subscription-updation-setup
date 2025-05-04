@@ -88,7 +88,8 @@ export async function updateNextChargeDate(subscriptionId, newDate, newProduct) 
         `https://api.rechargeapps.com/subscriptions/${subscriptionId}`,
         {
           shopify_variant_id: newProduct.variantId, 
-          product_title: newProduct.productTitle
+          product_title: newProduct.productTitle,
+          external_variant_id: { ecommerce: newProduct.variantId },
         },
         {
           headers: {
