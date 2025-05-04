@@ -27,7 +27,7 @@ if (!Array.isArray(fulfillmentDates) || fulfillmentDates.length === 0) {
 const app = express();
 app.use(bodyParser.json());
 
-app.post("/webhook/subscription-created", express.json(), (req, res) => {
+app.post("/webhook/subscription-created", express.json(), async (req, res) => {
   try {
     const subscription = req.body.subscription;
 
