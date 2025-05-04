@@ -76,7 +76,7 @@ app.post("/webhook/subscription-created", express.json(), async (req, res) => {
 
 
 
-app.post("/webhook/charge-created-", express.json(), async (req, res) => {
+app.post("/webhook/charge-created", express.json(), async (req, res) => {
   try {
     const chargeData = req.body.charge;
 
