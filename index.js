@@ -55,6 +55,16 @@ app.post("/webhook/subscription-created", express.json(), (req, res) => {
       console.log("No matching product ID. Ignoring Subscription.");
       res.sendStatus(401);
     }else{
+      const nextDate = await getNextFulfillmentDate(fulfillmentDates);
+
+      if (nextDate.label == "No date found") {
+        console.log("Last order of Season.");
+        return res.sendStatus(200);
+      }
+
+      await updateNextChargeDate(subscriptionId, nextDate.date , allowedProductsData[nextDate.index] );
+      await swapProductInSubscription(subscriptionId, nextDate.date , allowedProductsData[nextDate.index] )
+      
       res.sendStatus(200);
     }
 
