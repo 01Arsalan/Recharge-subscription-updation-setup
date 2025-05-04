@@ -82,6 +82,7 @@ export async function updateNextChargeDate(subscriptionId, newDate, newProduct) 
   
 
   export async function swapProductInSubscription(subscriptionId, newDate, newProduct) {
+    console.log("New Product Data:",newProduct)
     try {
       const res = await axios.put(
         `https://api.rechargeapps.com/subscriptions/${subscriptionId}`,
