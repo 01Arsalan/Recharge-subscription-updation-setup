@@ -149,6 +149,16 @@ export async function addSubscription(subscriptionId, customerId) {
   );
 }
 
+export async function updateSubscriptionCreatedAt(subscriptionId) {
+  return await TrackedSubscription.updateOne(
+    { subscription_id: subscriptionId },
+    {
+      $set: { created_at: new Date() }
+    }
+  );
+}
+
+
 export async function removeSubscription(subscriptionId) {
     return await TrackedSubscription.deleteOne({ subscription_id: subscriptionId });
 }
