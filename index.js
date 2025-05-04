@@ -56,6 +56,7 @@ app.post("/webhook/subscription-created", express.json(), async (req, res) => {
       res.sendStatus(401);
     }else{
       const nextDate = await getNextFulfillmentDate(fulfillmentDates);
+      console.log("Next Date:",nextDate);
 
       if (nextDate.label == "No date found") {
         console.log("Last order of Season.");
@@ -76,7 +77,7 @@ app.post("/webhook/subscription-created", express.json(), async (req, res) => {
 
 
 
-app.post("/webhook/charge-created", express.json(), async (req, res) => {
+app.post("/webhook/charge-created-", express.json(), async (req, res) => {
   try {
     const chargeData = req.body.charge;
 
