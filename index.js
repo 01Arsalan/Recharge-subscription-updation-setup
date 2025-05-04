@@ -1,6 +1,6 @@
 import express from 'express';
 import bodyParser from 'body-parser';
-import { getNextFulfillmentDate, updateNextChargeDate, swapProductInSubscription, addSubscription, removeSubscription, checkTrackedSubscription } from './helpers.js';
+import { getNextFulfillmentDate, updateNextChargeDate, swapProductInSubscription, addSubscription, removeSubscription, updateSubscriptionCreatedAt, checkTrackedSubscription } from './helpers.js';
 import { connectMongo } from './config/mongo-connection.js';
 import { queueSubscriptionUpdate } from './queue.js';
 
@@ -96,6 +96,9 @@ app.post("/webhook/charge-created", express.json(), async (req, res) => {
     if (!trackedSubscription.exists) {
       console.log("⚠️ Subscription not tracked. Ignoring.");
       return res.sendStatus(200);
+    }else if(!trackedSubscription.isOlderThan2Hrs){
+      console.log("⚠️ New Subscription not elegible for changes. Ignoring.");
+      return res.sendStatus(200);
     }else if (chargeData.status == "queued") {
       console.log("Subscription Queued. Processing.... ");
       const nextDate = getNextFulfillmentDate(fulfillmentDates);
@@ -113,7 +116,12 @@ app.post("/webhook/charge-created", express.json(), async (req, res) => {
       console.log("Next date Updated :", nextDate.date)
       console.log("Product swapped with :", allowedProductsData[nextDate.index] )
   
-      console.log("✅ Fulfillment processed and subscription updated.");
+      console.log("✅ Fulfillment processed and subscription updated. Updating DB");
+
+      await updateSubscriptionCreatedAt(subscriptionId);
+
+      console.log("✅ All Subscription changes updated.");
+      
       res.sendStatus(200);
     }else{
       res.sendStatus(301);
