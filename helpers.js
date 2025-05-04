@@ -111,7 +111,7 @@ export async function updateNextChargeDate(subscriptionId, newDate, newProduct) 
   
   
   
-  export function getNextFulfillmentDate(fulfillmentDates) {
+  export async function getNextFulfillmentDate(fulfillmentDates) {
     const today = new Date();
     
     for (let i = 0; i < fulfillmentDates.length; i++) {
