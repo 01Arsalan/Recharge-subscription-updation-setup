@@ -85,7 +85,8 @@ app.post("/webhook/charge-created", express.json(), async (req, res) => {
   try {
     const chargeData = req.body.charge;
 
-    console.log("📦 Charge Created Webhook Received:", chargeData);
+    console.log("📦 Charge Created Webhook Received:", req.body);
+    console.log("📦 Charge DATA:", chargeData);
     // Webhook version 2021-01
     const subscriptionId = chargeData.line_items[0].subscription_id;
     // Webhook version 2021-11
