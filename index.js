@@ -87,9 +87,9 @@ app.post("/webhook/charge-created", express.json(), async (req, res) => {
 
     console.log("📦 Charge Created Webhook Received:", chargeData);
     // Webhook version 2021-01
-    // const subscriptionId = chargeData.line_items[0].subscription_id;
+    const subscriptionId = chargeData.line_items[0].subscription_id;
     // Webhook version 2021-11
-    const subscriptionId = chargeData.line_items[0].purchase_item_id;
+    // const subscriptionId = chargeData.line_items[0].purchase_item_id;
 
     if (!subscriptionId) {
       console.warn("❗ No subscription ID found in charge-created webhook.");
