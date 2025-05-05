@@ -55,6 +55,8 @@ export async function updateNextChargeDate(subscriptionId, newDate, newProduct) 
       // }
   
       // 3. 🗓 Update next charge date
+
+      console.log("✅ Shipment date updating, id:",subscriptionId)
       const updateResponse = await axios.put(
         `${RECHARGE_BASE_URL}/subscriptions/${subscriptionId}`,
         {
