@@ -18,22 +18,22 @@ const headers = {
 export async function updateNextChargeDate(subscriptionId, newDate, newProduct) {
     try {
       // 1. 🔍 Get queued charges for the subscription
-      const queuedCharges = await axios.get(
-        `${RECHARGE_BASE_URL}/charges?subscription_id=${subscriptionId}&status=queued`,
-        {
-          headers: {
-            "X-Recharge-Version": "2021-11",
-            "X-Recharge-Access-Token": RECHARGE_API_TOKEN
-          }
-        }
-      );
+      // const queuedCharges = await axios.get(
+      //   `${RECHARGE_BASE_URL}/charges?subscription_id=${subscriptionId}&status=queued`,
+      //   {
+      //     headers: {
+      //       "X-Recharge-Version": "2021-11",
+      //       "X-Recharge-Access-Token": RECHARGE_API_TOKEN
+      //     }
+      //   }
+      // );
   
-      const charge = queuedCharges.data.charges?.[0];
+      // const charge = queuedCharges.data.charges?.[0];
 
   
-      if (charge) {
-        console.log("🔍 Queued charge found:", queuedCharges.data.charges);
-        console.log("Skipping chrage for Subscription: ",charge.line_items[0].purchase_item_id)
+      // if (charge) {
+      //   console.log("🔍 Queued charge found:", queuedCharges.data.charges);
+      //   console.log("Skipping chrage for Subscription: ",charge.line_items[0].purchase_item_id)
   
         // 2. ⏭ Skip the charge
         // await axios.post(
@@ -49,10 +49,10 @@ export async function updateNextChargeDate(subscriptionId, newDate, newProduct) 
         //   }
         // );        
   
-        console.log("⏭ Skipped existing queued charge:", charge.id);
-      } else {
-        console.log("ℹ️ No queued charge found, skipping skip step.");
-      }
+      //   console.log("⏭ Skipped existing queued charge:", charge.id);
+      // } else {
+      //   console.log("ℹ️ No queued charge found, skipping skip step.");
+      // }
   
       // 3. 🗓 Update next charge date
       const updateResponse = await axios.put(
