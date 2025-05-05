@@ -36,18 +36,18 @@ export async function updateNextChargeDate(subscriptionId, newDate, newProduct) 
         console.log("Skipping chrage for Subscription: ",charge.line_items[0].purchase_item_id)
   
         // 2. ⏭ Skip the charge
-        await axios.post(
-          `${RECHARGE_BASE_URL}/charges/${charge.id}/skip`,
-          {
-            purchase_item_id: charge.line_items[0].purchase_item_id
-          },
-          {
-            headers: {
-              "X-Recharge-Version": "2021-11",
-              "X-Recharge-Access-Token": RECHARGE_API_TOKEN
-            }
-          }
-        );        
+        // await axios.post(
+        //   `${RECHARGE_BASE_URL}/charges/${charge.id}/skip`,
+        //   {
+        //     purchase_item_id: charge.line_items[0].purchase_item_id
+        //   },
+        //   {
+        //     headers: {
+        //       "X-Recharge-Version": "2021-11",
+        //       "X-Recharge-Access-Token": RECHARGE_API_TOKEN
+        //     }
+        //   }
+        // );        
   
         console.log("⏭ Skipped existing queued charge:", charge.id);
       } else {
