@@ -69,8 +69,13 @@ app.post("/webhook/subscription-created", express.json(), async (req, res) => {
     }
 
   } catch (error) {
-    console.error("Error processing webhook:", error);
-    res.sendStatus(500);
+      let subscription_id = error.subscriptionId;
+      let new_date = error.newDate;
+      let new_product = error.newProduct;
+      await queueSubscriptionUpdate({ subscription_id, new_date, new_product });
+
+      console.error("❌ Error handling Subsciption-created webhook, Worker handling retries...\n Error: ", error);
+      res.sendStatus(500);
   }
 });
 
