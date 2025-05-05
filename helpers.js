@@ -32,8 +32,8 @@ export async function updateNextChargeDate(subscriptionId, newDate, newProduct) 
 
   
       if (charge) {
-        console.log("🔍 Queued charge found:", charge.id);
-        console.log("Skipping chrage for Sibscription: ",charge.line_items[0].purchase_item_id)
+        console.log("🔍 Queued charge found:", charge);
+        console.log("Skipping chrage for Subscription: ",charge.line_items[0].purchase_item_id)
   
         // 2. ⏭ Skip the charge
         await axios.post(
