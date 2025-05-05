@@ -19,21 +19,21 @@ const worker = new Worker(
 
     console.log('🔧 Processing subscription update for', subscription_id);
 
-    // Step 1: Skip existing charge (if any)
-    const charges = await axios.get(
-      `${RECHARGE_BASE_URL}/charges?subscription_id=${subscription_id}&status=queued`,
-      { headers: headers() }
-    );
-    const charge = charges.data.charges?.[0];
+    // // Step 1: Skip existing charge (if any)
+    // const charges = await axios.get(
+    //   `${RECHARGE_BASE_URL}/charges?subscription_id=${subscription_id}&status=queued`,
+    //   { headers: headers() }
+    // );
+    // const charge = charges.data.charges?.[0];
 
-    if (charge) {
-      console.log('⏭ Skipping charge:', charge.id);
-      await axios.post(
-        `${RECHARGE_BASE_URL}/charges/${charge.id}/skip`,
-        { purchase_item_id: charge.line_items[0].purchase_item_id },
-        { headers: headers() }
-      );
-    }
+    // if (charge) {
+    //   console.log('⏭ Skipping charge:', charge.id);
+    //   await axios.post(
+    //     `${RECHARGE_BASE_URL}/charges/${charge.id}/skip`,
+    //     { purchase_item_id: charge.line_items[0].purchase_item_id },
+    //     { headers: headers() }
+    //   );
+    // }
 
     // Step 2: Update charge date
     console.log('📅 Updating next charge date...');
