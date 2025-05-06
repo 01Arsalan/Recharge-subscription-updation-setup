@@ -115,7 +115,7 @@ app.post("/webhook/charge-created", express.json(), async (req, res) => {
         return res.sendStatus(200);
       }
 
-
+      console.log("Next date:",nextDate)
       await updateNextChargeDate(subscriptionId, nextDate.date , allowedProductsData[nextDate.index] );
       await swapProductInSubscription(subscriptionId, nextDate.date , allowedProductsData[nextDate.index] )
       
