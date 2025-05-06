@@ -140,7 +140,9 @@ export async function updateNextChargeDate(subscriptionId, newDate, newProduct) 
 
   
   export async function getNextFulfillmentDate(fulfillmentDates) {
-    const today = new Date();
+    // const today = new Date();
+    const today = new Date('2025-08-24');
+
     
     for (let i = 0; i < fulfillmentDates.length; i++) {
       let period = fulfillmentDates[i];
