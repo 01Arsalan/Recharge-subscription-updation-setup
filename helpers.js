@@ -114,8 +114,28 @@ export async function updateNextChargeDate(subscriptionId, newDate, newProduct) 
       throw err;
     }    
   }
-  
-  
+
+
+  export async function fetchSubscriptionIdFromCharge(chargeId) {
+  const url = `https://api.rechargeapps.com/charges/${chargeId}`;
+
+  try {
+    const response = await axios.get(url, {
+      headers: {
+        'X-Recharge-Access-Token': RECHARGE_API_TOKEN,
+        "X-Recharge-Version": "2021-11",  
+        'Accept': 'application/json',
+      }
+    });
+
+    const subscriptionId = response.data?.charge?.line_items[0]?.purchase_item_id ?? null;
+    return subscriptionId;
+  } catch (error) {
+    console.error('Failed to fetch subscription_id:', error.response?.data || error.message);
+    throw error;
+  }
+}
+
   
   export async function getNextFulfillmentDate(fulfillmentDates) {
     const today = new Date();
