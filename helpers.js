@@ -119,6 +119,8 @@ export async function updateNextChargeDate(subscriptionId, newDate, newProduct) 
   export async function fetchSubscriptionIdFromCharge(chargeId) {
   const url = `https://api.rechargeapps.com/charges/${chargeId}`;
 
+  console.log("No Subscription Id found on charge payload. Fetching it via Charge Id...")
+
   try {
     const response = await axios.get(url, {
       headers: {
