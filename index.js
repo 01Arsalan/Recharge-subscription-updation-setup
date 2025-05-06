@@ -108,7 +108,7 @@ app.post("/webhook/charge-created", express.json(), async (req, res) => {
       return res.sendStatus(200);
     }else if (chargeData.status == "QUEUED") {
       console.log("Subscription Queued. Processing.... ");
-      const nextDate = getNextFulfillmentDate(fulfillmentDates);
+      const nextDate = await getNextFulfillmentDate(fulfillmentDates);
 
       if (nextDate.label == "No date found") {
         console.log("🎉 Final order fulfilled. Subscription ended.");
