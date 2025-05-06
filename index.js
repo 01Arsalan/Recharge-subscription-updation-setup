@@ -106,7 +106,7 @@ app.post("/webhook/charge-created", express.json(), async (req, res) => {
     }else if(!trackedSubscription.isOlderThan2Hrs){
       console.log("⚠️ New Subscription not elegible for changes. Ignoring.");
       return res.sendStatus(200);
-    }else if (chargeData.status == "queued") {
+    }else if (chargeData.status == "QUEUED") {
       console.log("Subscription Queued. Processing.... ");
       const nextDate = getNextFulfillmentDate(fulfillmentDates);
 
