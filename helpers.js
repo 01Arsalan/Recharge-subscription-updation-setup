@@ -80,7 +80,7 @@ export async function updateNextChargeDate(subscriptionId, newDate, newProduct) 
       err.newProduct = newProduct;
     
       console.error("❌ Failed to update shipment date:", err.response?.data || err.message);
-      throw err;
+      return null
     }
   }
   
