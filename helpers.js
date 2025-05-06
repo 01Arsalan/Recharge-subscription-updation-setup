@@ -153,6 +153,9 @@ export async function updateNextChargeDate(subscriptionId, newDate, newProduct) 
   
       if (fulfillmentDate > today) {
         period = fulfillmentDates[i+1];
+        if(fulfillmentDates.length == (i+1)){
+          period = fulfillmentDates[i];
+        }
         fulfillmentDate = new Date(period.date);
         return {
           index: i+1, 
