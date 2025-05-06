@@ -155,6 +155,12 @@ export async function updateNextChargeDate(subscriptionId, newDate, newProduct) 
         period = fulfillmentDates[i+1];
         if(fulfillmentDates.length == (i+1)){
           period = fulfillmentDates[i];
+          fulfillmentDate = new Date(period.date);
+          return {
+            index: i, 
+            label: period.label,
+            date: fulfillmentDate.toISOString().split("T")[0] 
+          };
         }
         fulfillmentDate = new Date(period.date);
         return {
