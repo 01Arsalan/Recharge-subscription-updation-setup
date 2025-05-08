@@ -133,7 +133,7 @@ export async function updateNextChargeDate(subscriptionId, newDate, newProduct) 
     const subscriptionId = response.data?.charge?.line_items[0]?.purchase_item_id ?? null;
     return subscriptionId;
   } catch (error) {
-    console.error('Failed to fetch subscription_id.);
+    console.error('Failed to fetch subscription_id.');
     return null
   }
 }
