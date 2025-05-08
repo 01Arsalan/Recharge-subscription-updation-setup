@@ -143,55 +143,46 @@ export async function updateNextChargeDate(subscriptionId, newDate, newProduct) 
     const today = new Date();
 
     for (let i = 0; i < fulfillmentDates.length; i++) {
-        let period = fulfillmentDates[i];
-        let fulfillmentDate = new Date(period.date);
+        const current = new Date(fulfillmentDates[i].date);
+        if (current > today) {
+            let index, type, lastOrder = false;
 
-        if (fulfillmentDate > today) {
-            // for last date in queue
-            if (fulfillmentDates.length == (i + 1)) {
-                period = fulfillmentDates[i];
-                fulfillmentDate = new Date(period.date);
-                return {
-                    index: i,
-                    label: period.label,
-                    date: fulfillmentDate.toISOString().split("T")[0],
-                    lastOrder: true,
-                    type: "Last"
-                };
+            const isLast = i + 1 >= fulfillmentDates.length;
+            const isPreOrder = allowedProductsData[i + 1]?.variantId === productId;
+
+            if (isLast) {
+                index = i;
+                type = "Last";
+                lastOrder = true;
+            } else if (isPreOrder) {
+                index = i + 2;
+                type = "Pre-order";
+            } else {
+                index = i + 1;
+                type = "Normal";
             }
-            // for pre-orders
-            if (allowedProductsData[i + 1].variantId == productId) {
-                period = fulfillmentDates[i + 2];
-                fulfillmentDate = new Date(period.date);
-                return {
-                    index: i + 2,
-                    label: period.label,
-                    date: fulfillmentDate.toISOString().split("T")[0],
-                    lastOrder: false,
-                    type: "Pre-order"
-                };
-            }
-            // normal orders
-            period = fulfillmentDates[i + 1];
-            fulfillmentDate = new Date(period.date);
+
+            const period = fulfillmentDates[index];
+            const date = new Date(period.date).toISOString().split("T")[0];
+
             return {
-                index: i + 1,
+                index,
                 label: period.label,
-                date: fulfillmentDate.toISOString().split("T")[0],
-                lastOrder: false,
-                type: "Normal"
+                date,
+                lastOrder,
+                type
             };
         }
+        return {
+            index: null,
+            label: "Past last Date",
+            date: null,
+            lastOrder: false,
+            type: "Reject"
+        };
     }
 }
-  
-    
-    return {
-      index: -1, 
-      label: "No date found",
-      date: "No change"
-    };
-  }
+
   
 
 export async function addSubscription(subscriptionId, customerId) {
