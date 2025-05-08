@@ -140,19 +140,20 @@ export async function updateNextChargeDate(subscriptionId, newDate, newProduct) 
 
   
   export async function getNextFulfillmentDate(fulfillmentDates, allowedProductsData, productId) {
-    const today = new Date();
+    const today = new Date("2025-12-17");
 
     for (let i = 0; i < fulfillmentDates.length; i++) {
         const current = new Date(fulfillmentDates[i].date);
+        console.log("c",current,"  :  ","t",today)
         if (current > today) {
             let index, type, lastOrder = false;
 
-            const isLast = i + 1 >= fulfillmentDates.length;
+            const isLast = (i + 1) >= fulfillmentDates.length;
             const isPreOrder = allowedProductsData[i + 1]?.variantId === productId;
 
             if (isLast) {
                 index = i;
-                type = "Last";
+                type = "Reject";
                 lastOrder = true;
             } else if (isPreOrder) {
                 index = i + 2;
@@ -173,14 +174,15 @@ export async function updateNextChargeDate(subscriptionId, newDate, newProduct) 
                 type
             };
         }
-        return {
-            index: null,
-            label: "Past last Date",
-            date: null,
-            lastOrder: false,
-            type: "Reject"
-        };
+        
     }
+    return {
+        index: null,
+        label: "Past last Date",
+        date: null,
+        lastOrder: false,
+        type: "Reject"
+    };
 }
 
   
