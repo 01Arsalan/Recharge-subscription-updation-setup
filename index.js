@@ -57,8 +57,8 @@ app.post("/webhook/subscription-created", express.json(), async (req, res) => {
     }else{
       const nextDate = await getNextFulfillmentDate(fulfillmentDates,allowedProductsData,productId);
 
-      if (nextDate.label == "No date found") {
-        console.log("Last order of Season.");
+      if (nextDate.type == "Reject") {
+        console.log("Last order of Season. Switched to default dates.");
         return res.sendStatus(200);
       }
 
