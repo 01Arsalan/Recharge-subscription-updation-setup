@@ -139,37 +139,51 @@ export async function updateNextChargeDate(subscriptionId, newDate, newProduct) 
 }
 
   
-  export async function getNextFulfillmentDate(fulfillmentDates) {
+  export async function getNextFulfillmentDate(fulfillmentDates, allowedProductsData, productId) {
     const today = new Date();
-    // const today = new Date('2025-08-24');
 
-    
     for (let i = 0; i < fulfillmentDates.length; i++) {
-      let period = fulfillmentDates[i];
-      console.log("fulfillmentDates:",fulfillmentDates)
-      console.log("fulfillmentDate:",fulfillmentDates[i])
-      console.log("index:",i)
-      let fulfillmentDate = new Date(period.date);
-  
-      if (fulfillmentDate > today) {
-        period = fulfillmentDates[i+1];
-        if(fulfillmentDates.length == (i+1)){
-          period = fulfillmentDates[i];
-          fulfillmentDate = new Date(period.date);
-          return {
-            index: i, 
-            label: period.label,
-            date: fulfillmentDate.toISOString().split("T")[0] 
-          };
+        let period = fulfillmentDates[i];
+        let fulfillmentDate = new Date(period.date);
+
+        if (fulfillmentDate > today) {
+            // for last date in queue
+            if (fulfillmentDates.length == (i + 1)) {
+                period = fulfillmentDates[i];
+                fulfillmentDate = new Date(period.date);
+                return {
+                    index: i,
+                    label: period.label,
+                    date: fulfillmentDate.toISOString().split("T")[0],
+                    lastOrder: true,
+                    type: "Last"
+                };
+            }
+            // for pre-orders
+            if (allowedProductsData[i + 1].variantId == productId) {
+                period = fulfillmentDates[i + 2];
+                fulfillmentDate = new Date(period.date);
+                return {
+                    index: i + 2,
+                    label: period.label,
+                    date: fulfillmentDate.toISOString().split("T")[0],
+                    lastOrder: false,
+                    type: "Pre-order"
+                };
+            }
+            // normal orders
+            period = fulfillmentDates[i + 1];
+            fulfillmentDate = new Date(period.date);
+            return {
+                index: i + 1,
+                label: period.label,
+                date: fulfillmentDate.toISOString().split("T")[0],
+                lastOrder: false,
+                type: "Normal"
+            };
         }
-        fulfillmentDate = new Date(period.date);
-        return {
-          index: i+1, 
-          label: period.label,
-          date: fulfillmentDate.toISOString().split("T")[0] 
-        };
-      }
     }
+}
   
     
     return {
