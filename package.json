@@ -1,18 +1,28 @@
 {
-  "name": "recharge-backend",
-  "version": "1.0.0",
-  "main": "index.js",
+  "name": "recharge-seasonal-subscription",
+  "version": "2.0.0",
+  "description": "Automated seasonal subscription management backend integrating Shopify and Recharge",
+  "main": "src/index.js",
   "type": "module",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "start": "node src/index.js",
+    "start:worker": "node src/jobs/worker.js",
+    "dev": "node src/index.js",
+    "seed": "node src/scripts/seedDatabase.js",
+    "clear:queue": "node src/scripts/clearQueue.js",
+    "clear:failed": "node src/scripts/clearFailedJobs.js"
   },
-  "keywords": [],
+  "keywords": [
+    "recharge",
+    "shopify",
+    "subscription",
+    "seasonal",
+    "ecommerce"
+  ],
   "author": "",
   "license": "ISC",
-  "description": "",
   "dependencies": {
     "axios": "^1.8.4",
-    "body-parser": "^2.2.0",
     "bullmq": "^5.49.1",
     "dotenv": "^16.4.7",
     "express": "^5.1.0",

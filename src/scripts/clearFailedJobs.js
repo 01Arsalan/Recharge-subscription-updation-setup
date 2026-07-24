@@ -1,5 +1,5 @@
-import { connectMongo } from './config/mongo-connection.js';
-import { FailedJob } from './schema.js'; 
+import { connectMongo } from '../config/mongo.js';
+import { FailedJob } from '../models/FailedJob.js';
 
 async function clearFailedJobs() {
   try {
